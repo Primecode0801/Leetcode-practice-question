@@ -1,0 +1,46 @@
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // find first land cell
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 1) {
+                    return dfs(grid, i, j);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private int dfs(int[][] grid, int i, int j) {
+        // Case 1: Out of boundary → contributes 1
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) {
+            return 1;
+        }
+
+        // Case 2: Water cell → contributes 1
+        if (grid[i][j] == 0) {
+            return 1;
+        }
+
+        // Case 3: Already visited → contributes 0
+        if (grid[i][j] == -1) {
+            return 0;
+        }
+
+        // Mark visited
+        grid[i][j] = -1;
+
+        int perimeter = 0;
+
+        // Explore all 4 directions
+        perimeter += dfs(grid, i - 1, j); // up
+        perimeter += dfs(grid, i + 1, j); // down
+        perimeter += dfs(grid, i, j - 1); // left
+        perimeter += dfs(grid, i, j + 1); // right
+
+        return perimeter;
+    }
+}
